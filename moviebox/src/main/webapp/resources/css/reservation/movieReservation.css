@@ -1,0 +1,287 @@
+div{
+    box-sizing: border-box;
+}
+
+#wrap{
+    width: 1200px;
+    height: auto;
+}
+
+.swiper {
+    width: 1200px;
+    height: 400px;
+}
+
+.swiper-slide img {
+    width : 100%;
+    height : 100%;
+}
+
+div[class^=swiper-button] {
+    color : rgb(32, 32, 32);
+}
+
+#title{
+    padding-left: 50px;
+    height: 60px;
+    margin-top: 30px;
+    background-color: rgb(255, 193, 69);
+    font-size: 35px;
+    color: rgb(32,32,32);
+    font-weight: bold;
+    border-bottom: 1px solid gray;
+}
+
+#selectMovieArea{
+    background-color: rgb(255, 193, 69);
+}
+
+.poster:hover{
+    transform: scale(1.1);
+}
+
+#selectDateArea{
+    height: 80px;
+    width: 100%;
+}
+
+#printToday{
+    width: 1070px;
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    text-align: center;
+    color: rgb(241, 241, 241);
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 40px;
+}
+
+#selectLocationArea{
+    height: 60px;
+}
+
+#selectLocation{
+    width: 1070px;
+    height: 100%;
+    line-height: 60px;
+    float: left;
+    margin-left: 62px;
+}
+
+#selectLocation > select{
+    height: 40px;
+    width: 150px;
+    border-radius: 12px;
+    padding-left: 15px;
+    background-color: rgb(255, 193, 69);
+    font-size: 20px;
+    font-weight: 700;
+    border: none;
+}
+
+#screenDate{
+    height: 40px;
+    border-radius: 12px;
+    padding-left: 15px;
+    background-color: rgb(255, 193, 69);
+    width: 200px;
+    font-size: 20px;
+    font-weight: 700;
+    margin-left: 15px;
+    border: none;
+}
+
+#selectLocation > select:focus{
+    outline: none;
+}
+
+#screenDate:focus{
+    outline: none;
+}
+
+#selectScreenArea{
+    height: auto;
+    padding-bottom: 100px;
+}
+
+#printScreen{
+    width: 1070px;
+    height: auto;
+    margin: auto;
+}
+
+.screen{
+    width: 1070px;
+    height: 175px;
+    margin-top: 25px;
+    border-radius: 0px;
+    background-color: rgb(148, 145, 145);
+    border-radius: 25px;
+}
+
+.theaterName{
+    height: 60px;
+    padding-left: 60px;
+    line-height: 60px;
+    font-size: 25px;
+    font-weight: bold;
+    color: rgb(51,51,51);
+}
+
+.selectScreen{
+    margin-left: 40px;
+    width: 990px;
+    display: flex;
+    white-space: nowrap;
+    overflow-x: auto;
+}
+
+.screenName{
+    float: left;
+    min-width: 155px;
+    min-height: 85px;
+    margin-right: 50px;
+    margin-bottom: 5px;
+    border-radius: 25px;
+    background-color: rgba(255, 255, 255, 0.6);
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 45px;
+}
+
+.screenName:hover{
+    cursor: pointer;
+    background-color: rgb(255, 193, 69);
+}
+
+.swiper-slide{
+    display: flex;
+}
+
+.poster{
+    height: 280px;
+    width: 180px;
+    margin: auto;
+    border-radius: 24px;
+}
+
+.base{
+    height: 280px !important; 
+    width: 180px !important;
+    margin: auto;
+    border-radius: 24px;
+}
+
+.poster img{
+    width: 100%;
+    height: 100%;
+    border-radius: 24px;
+    margin: auto;
+    box-shadow: 4px 4px 8px rgb(32, 32, 32);
+}
+
+.poster img:hover{
+    cursor: pointer;
+}
+
+#select-screen-area{
+    height: 240px;
+    width: 144px;
+    border: 3px solid rgb(255, 193, 69);
+    position: fixed; 
+    bottom: 300px; 
+    right: 20px;
+}
+
+#select-screen{
+    height: 160px;
+    width: 100%;
+    text-align: center;
+    color: rgb(148, 145, 145);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+#select-screen > div{
+    margin-top: 15px;
+}
+
+#submit-btn{
+    height: 60px;
+    width: 140px;
+    font-weight: 600;
+    font-size: 24px;
+    background-color: rgb(255, 193, 69);
+    border: none;
+}
+
+.selectScreen::-webkit-scrollbar {
+    height: 10px;
+}
+
+.selectScreen::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.267);
+    border-radius: 10px;
+}
+
+.selectScreen::-webkit-scrollbar-thumb {
+    background-color: rgb(255, 193, 69);
+    border-radius: 10px;
+}
+
+.clicked{
+    color: rgb(32,32,32);
+    background-color: rgb(255, 193, 69);
+}
+
+.resultMsg{
+    height: 200px;
+    width: 1070px;
+    color: rgb(255, 193, 69);
+    background-color: rgba(255, 255, 255, 0.267);
+    border-radius: 25px;
+    line-height: 200px;
+    text-align: center;
+    font-size: 50px;
+    font-weight: 500;
+}
+
+#input-theaterName{
+    height: 40px;
+    border-radius: 9px;
+    padding-left: 15px;
+    background-color: white;
+    width: 200px;
+    font-size: 20px;
+    font-weight: 500;
+    margin-left: 5px;
+    border: none;
+}
+
+#search-theaterName{
+    position: absolute;
+    height: 40px;
+    width: 43px;
+    border: 1px solid rgb(255, 193, 69);
+    color: rgb(255, 193, 69);
+    background-color: #1A1A1A;
+    border-radius: 9px;
+    line-height: 0px;
+    right: 205px;
+    top: 9px;
+}
+
+#search-theaterName img{
+    height: 90%;
+    width: 100%;
+}
+
+#theaterInputBtnArea{
+    position: relative;
+    line-height: 60px;
+    height: 60px;
+    float: right;
+}

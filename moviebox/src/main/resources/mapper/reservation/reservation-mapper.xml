@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="reservationMapper">
+
+	<resultMap type="location" id="locationResultSet">
+		<result column="LOCATION_CODE" property="locationCode" />
+		<result column="LOCATION_NAME" property="locationName" />
+	</resultMap>
+	
+	<resultMap type="seat" id="seatResultSet">
+		<result column="SCREEN_NO" property="screenNo" />
+		<result column="TICKET_NO" property="ticketNo" />
+		<result column="SEAT_NO" property="seatNo" />
+	</resultMap>
+	
+	<resultMap type="theater" id="theaterResultSet">
+		<result column="THEATER_NO" property="theaterNo" />
+		<result column="THEATER_NAME" property="theaterName" />
+		<result column="MOVIE_NO" property="movieNo" />
+		<result column="MOVIE_TITLE" property="movieTitle" />
+		<result column="MOVIE_RT" property="movieRt" />
+	    <collection property="screenList" resultMap="screenResultSet"/>
+	</resultMap>
+	
+	<resultMap type="screen" id="screenResultSet">
+		<result column="SCREEN_NO" property="screenNo"/>
+		<result column="SCREEN_NAME" property="screenName"/>
+		<result column="WATCH_DATE" property="watchDate"/>
+	</resultMap>
+	
+	<resultMap type="reservation" id="reservationResultSet">
+		<result column="THEATER_NAME" property="theaterName" />
+	    <result column="SCREEN_NAME" property="screenName" />
+	    <result column="MOVIE_TITLE" property="movieTitle" />
+	    <result column="WATCH_DATE" property="watchDate" />
+	    <result column="MEMBER_NO" property="memberNo" />
+	    <result column="TICKET_NO" property="ticketNo" />
+	    
+		<association property="movie" javaType="Movie">
+			<result column="MOVIE_RELEASE" property="movieRelease" />
+		    <result column="CHANGE_NAME" property="changeName" />
+		    <result column="GENRE_NAME" property="genreName" />
+		    <result column="FILE_PATH" property="filePath" />
+		    <result column="MOVIE_RT" property="movieRt" />
+		    <result column="MOVIE_NO" property="movieNo" />
+		</association>
+		<association property="price" javaType="Price">
+	    	<result column="TEEN_PEOPLE" property="studentCount" />
+	    	<result column="ADULT_PEOPLE" property="commonCount" />
+	    	<result column="TEEN_PRICE" property="studentPrice" />
+	    	<result column="ADULT_PRICE" property="commonPrice" />
+	    	<result column="TOTAL_PRICE" property="totalPrice" />
+	  	</association>
+	</resultMap>
+	
+	<select id="selectLocationList" resultMap="locationResultSet">
+		SELECT
+		       LOCATION_CODE,
+		       LOCATION_NAME
+		  FROM
+		       TB_LOCATION
+	     ORDER
+	        BY
+	           LOCATION_CODE
+	</select>
+	
+	<select id="selectScreen" parameterType="hashmap" resultMap="theaterResultSet">
+		SELECT
+		       THEATER_NO,
+		       THEATER_NAME,
+		       MOVIE_TITLE,
+		       MOVIE_NO,
+		       MOVIE_RT,
+		       SCREEN_NO,
+		       SCREEN_NAME||'관' AS SCREEN_NAME,
+		       TO_CHAR(WATCH_DATE,'HH24:MI') || '~' || TO_CHAR(WATCH_DATE + NUMTODSINTERVAL(TO_NUMBER(MOVIE_RT), 'MINUTE') , 'HH24:MI') AS WATCH_DATE
+		  FROM
+		       TB_SCREEN
+		  JOIN    
+		       TB_MOVIE USING(MOVIE_NO)
+		  JOIN
+		       TB_THEATER USING(THEATER_NO)
+		  JOIN
+		       TB_LOCATION USING(LOCATION_CODE)
+		 WHERE
+		       MOVIE_NO = #{ movieNo }
+		   AND
+		       LOCATION_NAME LIKE '%'||#{ location }||'%'
+		   AND
+		   	   THEATER_NAME LIKE '%'||#{ theaterName }||'%'
+		   AND 
+		       TO_CHAR(WATCH_DATE, 'YYYY-MM-DD') = #{ date }
+		 ORDER
+		    BY
+		       THEATER_NO,
+		       WATCH_DATE
+	</select>
+	
+	<select id="checkSeatInfo" parameterType="_int" resultMap="seatResultSet">
+		SELECT
+		       SEAT_NO,
+		       S.SCREEN_NO,
+		       TICKET_NO
+		  FROM
+		       TB_SEAT S
+		  JOIN
+		       TB_RESERVATION R USING(TICKET_NO)
+		 WHERE
+		       S.SCREEN_NO = #{ screenNo }
+		   AND
+		       R.STATUS = 'Y'
+		 ORDER
+		    BY
+		       SUBSTR(SEAT_NO, 1, 1),
+		       CAST(SUBSTR(SEAT_NO, 2) AS NUMBER),
+		       SEAT_NO
+	</select>
+	
+	<select id="printReservationInfo" parameterType="hashmap" resultMap="reservationResultSet">
+		SELECT        
+		       MOVIE_NO,
+		       MOVIE_TITLE,
+		       MOVIE_RT,
+		       TO_CHAR(MOVIE_RELEASE, 'YYYY-MM-DD') AS MOVIE_RELEASE,
+		       GENRE_NAME,
+		       FILE_PATH,
+		       CHANGE_NAME,
+		       SCREEN_NAME||'관' AS SCREEN_NAME,
+		       THEATER_NAME,
+		       (TO_CHAR(WATCH_DATE,'YYYY-MM-DD') || ' ' || TO_CHAR(WATCH_DATE,'HH24:MI') || '~' || TO_CHAR(WATCH_DATE + NUMTODSINTERVAL(TO_NUMBER(MOVIE_RT), 'MINUTE'), 'HH24:MI')) AS WATCH_DATE,
+		       TO_CHAR(SYSDATE, 'YYYY-MM-DD') AS RESERVATION_DATE,
+		       TO_CHAR(
+		       			(
+				         SELECT 
+				                PRICE * #{ teenAge }
+				           FROM 
+				                TB_PRICE
+				          WHERE 
+				                GRADE = 1
+				        )
+				        +
+				        (
+				         SELECT 
+				                PRICE * #{ adultAge }
+				           FROM 
+				                TB_PRICE
+				          WHERE 
+				                GRADE = 2
+				        )
+				         ) AS TOTAL_PRICE
+		  FROM
+		       TB_MOVIE
+		  JOIN
+		       TB_ATTACHMENT USING(MOVIE_NO)
+		  JOIN
+		       TB_GENRE ON(GENRE_NO = GENRE_CODE)
+		  JOIN
+		       TB_SCREEN USING(MOVIE_NO)
+		  JOIN
+		       TB_THEATER USING(THEATER_NO)
+		 WHERE 
+		       MOVIE_NO = #{ movieNo }
+		   AND
+		       SCREEN_NO = #{ screenNo }
+		   AND
+		   	   FILE_LEVEL = 1
+	</select>
+	
+	<insert id="insertReservation" parameterType="reservation" useGeneratedKeys="true">
+		INSERT 
+		  INTO 
+		       TB_RESERVATION
+		       (
+		        TICKET_NO,
+		        PERSONNEL,
+		        MEMBER_NO,
+		        SCREEN_NO,
+		        STATUS,
+		        RESERVATION_DATE
+		       ) 
+		VALUES 
+		       (
+		        SEQ_TKNO.NEXTVAL,
+		        #{ personNum },
+		        #{ memberNo },
+		        #{ screenNo },
+		        DEFAULT,
+		        SYSDATE
+		       )
+		<selectKey keyProperty="ticketNo" resultType="_int" order="AFTER">
+			SELECT SEQ_TKNO.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<insert id="insertPriceSheet" parameterType="reservation" >
+        INSERT ALL 
+	    <foreach collection="seatList" item="seat" index="index">
+	        <choose>
+	            <when test="index &lt; teenPersonNo">
+	                INTO TB_PRICESHEET (GRADE, TICKET_NO) VALUES (1, #{ticketNo})
+	            </when>
+	            <otherwise>
+	                INTO TB_PRICESHEET (GRADE, TICKET_NO) VALUES (2, #{ticketNo})
+	            </otherwise>
+	        </choose>
+	    </foreach>
+	    SELECT * FROM DUAL
+	</insert>
+	
+	<insert id="insertSeat" parameterType="reservation" >
+		INSERT ALL
+		<foreach collection="seatList" item="seat">
+			INTO TB_SEAT (SEAT_NO, SCREEN_NO, TICKET_NO) 
+		    VALUES (#{seat.seatNo}, #{screenNo}, #{ticketNo})
+		</foreach>
+		SELECT * FROM DUAL
+	</insert>
+	
+	<select id="checkReservationInfo" parameterType="_int" resultMap="reservationResultSet">
+		SELECT
+		       MOVIE_NO,
+		       MOVIE_TITLE,
+		       MOVIE_RT,
+		       TO_CHAR(MOVIE_RELEASE, 'YYYY-MM-DD') AS MOVIE_RELEASE,
+		       TICKET_NO,
+		       TEEN_PEOPLE,
+		       ADULT_PEOPLE,
+		       TEEN_PRICE,
+		       ADULT_PRICE,
+		       TOTAL_PRICE,
+		       GENRE_NAME,
+		       FILE_PATH,
+		       CHANGE_NAME,
+		       SCREEN_NAME||'관' AS SCREEN_NAME,
+		       THEATER_NAME,
+		       (TO_CHAR(WATCH_DATE,'YYYY-MM-DD') || '   ' || TO_CHAR(WATCH_DATE,'HH24:MI') || '~' || TO_CHAR(WATCH_DATE + NUMTODSINTERVAL(TO_NUMBER(MOVIE_RT), 'MINUTE'), 'HH24:MI')) AS WATCH_DATE,
+		       TO_CHAR(SYSDATE, 'YYYY-MM-DD') AS RESERVATION_DATE
+		  FROM
+		       TB_RESERVATION
+		  JOIN (
+		        SELECT
+		               TICKET_NO,
+		               TEEN_PEOPLE,
+		               ADULT_PEOPLE,
+		               (TEEN_PEOPLE * TP.PRICE) AS TEEN_PRICE,
+		               (ADULT_PEOPLE * AP.PRICE) AS ADULT_PRICE,
+		               ((TEEN_PEOPLE * TP.PRICE) + (ADULT_PEOPLE * AP.PRICE)) AS TOTAL_PRICE
+		          FROM
+		               (
+		                SELECT
+		                       TICKET_NO,
+		                       COUNT(CASE WHEN GRADE = 1 THEN 1 ELSE NULL END) AS TEEN_PEOPLE,
+		                       COUNT(CASE WHEN GRADE = 2 THEN 2 ELSE NULL END) AS ADULT_PEOPLE
+		                  FROM
+		                       TB_PRICESHEET
+		                  JOIN
+		                       TB_PRICE USING(GRADE)
+		                 WHERE
+		                       TICKET_NO = #{ticketNo}
+		                 GROUP
+		                    BY
+		                       TICKET_NO
+		               )
+		          JOIN
+		               TB_PRICE TP ON(TP.GRADE = 1)
+		          JOIN
+		               TB_PRICE AP ON(AP.GRADE = 2)
+		        ) USING(TICKET_NO)      
+		   JOIN
+		        TB_SCREEN USING(SCREEN_NO)
+		   JOIN
+		        TB_MOVIE USING(MOVIE_NO)
+		   JOIN
+		        TB_THEATER USING(THEATER_NO)
+		   JOIN
+		        TB_ATTACHMENT USING(MOVIE_NO)
+		   JOIN
+		        TB_GENRE ON(GENRE_NO =GENRE_CODE)
+		  WHERE
+		        FILE_LEVEL = 1
+	</select>
+	
+	<select id="selectSeatList" parameterType="_int" resultMap="seatResultSet">
+		SELECT
+		       SEAT_NO,
+		       S.SCREEN_NO SCREEN_NO,
+		       TICKET_NO
+		  FROM
+		       TB_SEAT S
+		  JOIN
+		       TB_RESERVATION R USING(TICKET_NO)
+		 WHERE
+		       TICKET_NO = #{ ticketNo }
+		   AND
+		       R.STATUS = 'Y'
+		 ORDER
+		    BY
+		       SUBSTR(SEAT_NO, 1, 1),
+		       CAST(SUBSTR(SEAT_NO, 2) AS NUMBER),
+		       SEAT_NO 
+	</select>
+	
+	
+	
+
+	
+</mapper>

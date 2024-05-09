@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="memberMapper">
+	
+	<resultMap type="seat" id="seatResultSet">
+		<result column="SCREEN_NO" property="screenNo" />
+		<result column="TICKET_NO" property="ticketNo" />
+		<result column="SEAT_NO" property="seatNo" />
+	</resultMap>
+	
+	<insert id="memberInsert" parameterType="member">
+		INSERT
+  	      INTO
+       		   TB_MEMBER
+       		   (
+       		   MEMBER_NO,
+       		   MEMBER_ID,
+       		   MEMBER_PWD,
+       		   MEMBER_NAME,
+       		   BIRTHDAY,
+       		   GENDER,
+       		   EMAIL,
+       		   PHONE,
+       		   ADDRESS,
+       		   LOCAL_CODE
+       		   )
+		VALUES 
+			   (
+			   SEQ_MEMNO.NEXTVAL,
+			   #{memberId},
+			   #{memberPwd},
+			   #{memberName},
+			   #{birthday},
+			   #{gender},
+			   #{email},
+			   #{phone},
+			   #{address},
+			   #{localCode}
+			   )
+	</insert>
+	
+	<insert id="genreInsert" parameterType="com.kh.moviebox.common.model.vo.Genre">
+		INSERT
+   		  INTO
+       		   TB_MEMBERGENRE
+	    VALUES
+	    	   (
+	    		SEQ_MEMNO.CURRVAL,
+	    		(SELECT
+       				    GENRE_CODE
+ 				   FROM
+       				    TB_GENRE
+ 				   WHERE
+       					 GENRE_NAME = #{genreName})
+       		   )
+	</insert>
+
+	<select id="login" parameterType="member"
+				       resultType="member">
+		SELECT
+               MEMBER_NO memberNo,
+               MEMBER_ID memberId,	
+               MEMBER_PWD memberPwd,	
+               MEMBER_NAME memberName,	
+               TO_CHAR(BIRTHDAY,'YYYY-MM-DD') AS BIRTHDAY,	
+               GENDER,	
+               EMAIL,	
+               PHONE,	
+               ADDRESS,	
+               ENROLL_DATE enrollDate,	
+               STATUS,	
+               PRIVILEGE,	
+               LOCATION_NAME localName
+   	      FROM
+               TB_MEMBER
+          JOIN
+               TB_LOCATION ON(LOCAL_CODE = LOCATION_CODE)
+         WHERE
+               MEMBER_ID = #{memberId}
+           AND
+               MEMBER_PWD = #{memberPwd}
+           AND
+               STATUS = 'Y'
+	</select>
+	
+	<select id="loginGenre" parameterType="member"
+							resultType="memberGenre">
+		SELECT
+               GENRE_NAME
+	   	  FROM
+	           TB_MEMBER
+          JOIN
+               TB_MEMBERGENRE ON(MEMBER_NO = MEM_NO)
+          JOIN
+               TB_GENRE USING(GENRE_CODE)
+         WHERE
+	           MEMBER_ID = #{memberId}
+	       AND
+	           MEMBER_PWD = #{memberPwd}
+	       AND
+	           STATUS = 'Y'
+	</select>
+	
+	<select id="seatList" parameterType="_int" resultMap="seatResultSet">
+		SELECT
+       			SEAT_NO
+ 		   FROM   
+       			TB_SEAT
+ 		  WHERE
+       			TICKET_NO = #{ticketNo}
+ 		  ORDER
+   		     BY
+       			SUBSTR(SEAT_NO, 1, 1),
+	   			CAST(SUBSTR(SEAT_NO, 2) AS NUMBER),
+       			SEAT_NO
+	</select>
+
+</mapper>

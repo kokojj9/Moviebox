@@ -1,0 +1,122 @@
+body{
+    color: rgb(32,32,32);
+}
+
+div{
+    box-sizing: border-box;
+}
+
+a{
+    text-decoration: none;
+    color: rgb(32,32,32);
+}
+
+#wrap{
+    width: 1200px;
+    height: 800px;
+}
+
+#title{
+    height: 80px;
+    width: 100%;
+    margin-top: 30px;
+    color: rgb(32,32,32);
+    background-color: rgb(255, 193, 69);
+    font-size: 35px;
+    font-weight: 700;
+    line-height: 80px;
+    padding-left: 30px;
+}
+
+#content-info{
+    width: 1000px;
+    height: 600px;
+    margin: 50px auto 100px auto;
+    background-color: #0e0e0e;
+    padding-top: 1px;
+}
+
+#print-info-area{
+    width: 850px;
+    height: 500px;
+    margin: 50px auto auto auto;
+}
+
+#movie-info-area{
+    float: left;
+    width: 300px;
+    height: 475px;
+    margin-top: 5px;
+}
+
+#reservation-info-area{
+    float: left;
+    width: 548px;
+    height: 450px;
+}
+
+#check-btn{
+    width: 100px;
+    height: 50px;
+    font-size: 20px;
+    font-weight: 600;
+    background-color: rgb(255, 193, 69);
+    border: 0;
+    float: right;
+    margin-right: 50px;
+}
+
+#movie-poster{
+    width: 220px;
+    height: 330px;
+    margin: 10px auto auto auto;
+}
+
+#movie-poster img{
+    height: 100%;
+    width: 100%;
+}
+
+.movie-detail-info{
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 3px;
+
+}
+
+#movie-info div{
+    color: rgb(125, 124, 124);
+}
+
+#reservation-info{
+    width: 550px;
+    height: 400px;
+    margin: 30px auto auto 50px;
+}
+#reservation-info > div{
+    float: left;
+    margin: 20px auto auto auto;
+}
+.select-info{
+    width: 150px;
+    font-size: 20px;
+    font-weight: 600;
+    color: rgb(125, 124, 124);
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.print-info{
+    width: auto;
+    font-size: 20px;
+    font-weight: 500;
+    color: rgb(125, 124, 124);
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+#check-btn a{
+    color: black;
+    text-decoration: none;
+}

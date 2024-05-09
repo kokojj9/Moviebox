@@ -1,0 +1,311 @@
+body{
+    color: rgb(32,32,32);
+}
+div{
+    box-sizing: border-box;
+}
+a{
+    text-decoration: none;
+    color: rgb(32,32,32);
+}
+
+#wrap{
+    width: 1200px;
+    height: auto;
+}
+
+#title{
+    height: 80px;
+    width: 100%;
+    margin-top: 30px;
+    color: rgb(32,32,32);
+    background-color: rgb(255, 193, 69);
+    font-size: 35px;
+    font-weight: 700;
+    line-height: 80px;
+    padding-left: 30px;
+    user-select: none;
+}
+
+#selectPersonArea{
+    height: 280px;
+    width: 100%;
+}
+
+#seat-title{
+    height: 50px;
+    font-size: 24px;
+    font-weight: 700;
+    color: rgb(148, 145, 145);
+    line-height: 50px;
+    text-align: center;
+    margin-top: 50px;
+    user-select: none;
+}
+
+.line{
+    height: 55px;
+    width: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+}
+
+.line-wrap{
+    width: 750px;
+    height: 55px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.seats{
+    height: 28px;
+    width: 30px;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    line-height: 30px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    background-color: rgba(70, 69, 69, 0.82);
+    color: rgb(125, 124, 124);
+    user-select: none;
+}
+
+.seats:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+}
+
+#selectText{
+    height: 100px;
+    color: rgb(255, 193, 69);
+    padding-top: 30px;
+    padding-left: 30px;
+    font-size: 28px;
+    font-weight: 700;
+    user-select: none;
+}
+
+#select-wrap{
+    height: 100px;
+    width: 500px;
+    margin: auto;
+    user-select: none;
+}
+
+#movie-info{
+    width: 800px;
+    height: 50px;
+    margin: auto;
+    color: rgb(255, 193, 69);
+    text-align: center;
+    font-size: 24px;
+    font-weight: 500;
+    user-select: none;
+}
+
+.selectAge{
+    float: left; 
+    margin-left: 70px;
+    margin-top: 5px;
+}
+
+.selectAge > button{
+    height: 35px;
+    width: 65px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 8px;
+    border: none;
+    cursor: none;
+}
+
+#selectPerson{
+    float: left;
+    margin-left: 20px;
+    margin-top: 5px;
+}
+
+#selectPerson > button{
+    height: 35px;
+    width: 35px;
+    border: none;
+    border-radius: 8px;
+}
+
+#selectPerson > button:hover{
+    background-color: rgb(255, 193, 69);
+    color: rgb(32,32,32);
+}
+
+#seat-arrange{
+    width: 800px;
+    height: 450px;
+    margin: auto;
+    margin-bottom: 20px;
+    background-color: #0e0e0e;
+}
+
+#select-seat{
+    color: rgb(125, 124, 124);
+}
+
+#select-people{
+    height: 80px;
+    width: 200px;
+    margin: auto;
+    text-align: center;
+    color: rgb(125, 124, 124);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+#print-resv-info{
+    color: rgb(32,32,32);
+    background-color: rgb(255, 193, 69);
+    height: 60px;
+    width: 150px;
+    border: 0;
+    font-size: 24px;
+    font-weight: 700;
+    margin-left: 850px;
+    user-select: none;
+}
+
+#select-btn{
+    width: 100%;
+    background-color: rgb(39, 39, 39);
+    margin-bottom: 20px;
+}
+
+.screen-wrap {
+    height: 100px;
+    perspective: 1000px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+
+.screen {
+    width: 400px;
+    height: 80px;
+    background-color: white;
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.7);
+}
+
+.rotate {
+    transform: rotateX(-50deg);
+}
+
+.clicked{
+    color: rgb(32,32,32);
+    background-color: rgb(255, 193, 69);
+}
+
+.disabled{
+    height: 28px;
+    width: 30px;
+    margin-top: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 30px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    background-color: crimson;
+    color: black;
+    pointer-events: none;
+}
+
+#check-reservation{
+    float: left;
+    width: 250px;
+    height: 400px;
+}
+
+#check-info{
+    position: relative;
+    float: left;
+    width: 500px;
+    height: 350px;
+    margin-top: 20px;
+    margin-left: 25px;
+    border-left: 1px solid rgb(125, 124, 124);
+}
+
+#check-movie{
+    float: left;
+    width: 200px;
+    height: 350px;
+    margin-top: 20px;
+    margin-left: 25px;
+}
+
+#check-movie div{
+    font-size: 12px;
+    font-weight: 700;
+}
+
+#reservation-info{
+    float: left;
+    width: auto;
+    height: 300px;
+    margin: 0px auto auto 50px;
+    user-select: none;
+}
+
+#reservation-info > div {
+    float: left;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+#poster-select{
+    width: 180px;
+    height: 260px;
+    margin: auto;
+}
+
+#check-area{
+    width: 800px;
+    height: 400px;
+    margin: 0px auto 50px auto;
+    background-color: #0e0e0e;
+    user-select: none;
+}
+
+#check-area div{
+    color: rgb(125, 124, 124);
+}
+
+.select-info{
+    width: 100px;
+}
+
+.print-info{
+    width: auto;
+}
+
+.select-info, .print-info{
+    height: 40px;
+    line-height: 40px;
+}
+
+#payment-btn{
+    position: absolute;
+    right: 30px;
+    bottom: 20px;
+    height: 40px;
+    width: 100px;
+    border: 0;
+    color: rgb(32,32,32);
+    background-color: rgb(255, 193, 69);
+    font-size: 18px;
+    font-weight: 700;
+}

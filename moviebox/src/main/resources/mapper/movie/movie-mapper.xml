@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="movieMapper">
+
+	<resultMap type="movie" id="movieResultSet">
+		<result column="MOVIE_NO" property="movieNo"/>
+		<result column="MOVIE_TITLE" property="movieTitle"/>
+		<result column="MOVIE_RT" property="movieRt"/>
+		<result column="MOVIE_RATED" property="movieRated"/>
+		<result column="MOVIE_RELEASE" property="movieRelease"/>
+		<result column="MOVIE_STORY" property="movieStory"/>
+		<result column="STATUS" property="status"/>
+		<result column="GENRE_NO" property="genreName"/>
+		<result column="DIRECTOR_NO" property="directorName"/>
+		<result column="MOVIE_UPDATE" property="movieUpdate"/>
+		<result column="TRAILER_VIDEO" property="trailerVideo"/>
+		<result column="FILE_PATH" property="filePath"/>
+		<result column="CHANGE_NAME" property="changeName"/>
+	</resultMap>
+	
+	<select id="selectMovieList" resultMap="movieResultSet">
+		SELECT
+		       MOVIE_NO,
+		       MOVIE_TITLE,
+		       MOVIE_RT,
+		       MOVIE_RATED,
+		       MOVIE_RELEASE,
+		       MOVIE_STORY,
+		       STATUS,
+		       GENRE_CODE,
+		       DIRECTOR_NO,
+		       MOVIE_UPDATE,
+		       FILE_PATH,
+		       CHANGE_NAME,
+		       TRAILER_VIDEO
+		  FROM
+		       TB_MOVIE
+		  JOIN
+		       TB_GENRE ON (GENRE_CODE = GENRE_NO)
+		  JOIN
+		       TB_ATTACHMENT USING (MOVIE_NO)
+		  JOIN
+		       (
+		        SELECT
+		               COUNT(SEAT_NO) MOVIERATE,
+		               MOVIE_NO
+		          FROM
+		               TB_SEAT
+		          JOIN
+		               TB_SCREEN USING(SCREEN_NO)
+		         RIGHT
+		          JOIN
+		               TB_MOVIE USING(MOVIE_NO)
+		         GROUP
+		            BY
+		               MOVIE_NO
+		       ) USING(MOVIE_NO)
+		 WHERE
+		       FILE_LEVEL = 1
+		 ORDER
+		    BY
+		       MOVIERATE DESC,
+		       MOVIE_RELEASE DESC
+	</select>
+	
+	
+	
+	
+	
+	
+
+</mapper>
